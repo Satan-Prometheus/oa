@@ -35,7 +35,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         if (user_id == null) {
 
-            response.sendRedirect("/a/login");
+            response.sendRedirect("/a/login/pg");
             return false;
         }
 

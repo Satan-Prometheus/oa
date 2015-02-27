@@ -45,7 +45,14 @@ public class LoginController {
 
         session.setAttribute("user", user);
 
-        return new ModelAndView("index");
+        try {
+            response.sendRedirect("/a/index/welcome");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        return new ModelAndView("index");
+        return null;
     }
 
 

@@ -1,6 +1,9 @@
 package com.hx.domain;
 
+import com.hx.common.FlowStep;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by xh on 2015/2/27.
@@ -16,6 +19,16 @@ public class User {
     private String department;
 
     private Date lastLoginTime;
+
+    private List<FlowStep> relatedFlowSteps;
+
+    public List<FlowStep> getRelatedFlowSteps() {
+        return relatedFlowSteps;
+    }
+
+    public void initRelatedFlowSteps() {
+
+    }
 
     public String getId() {
         return id;

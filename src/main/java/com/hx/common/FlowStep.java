@@ -16,4 +16,7 @@ public class FlowStep {
     @XmlAttribute(name = "department")
     public String department;
 
+    public Flow flow;
+
+    public Level lvl;
 }

@@ -18,6 +18,8 @@ public class FlowManager {
 
     private Map<String, Flow> flowHolder = new HashMap<String, Flow>();
 
+    private Map<Integer, Level> levelHolder = new HashMap<Integer, Level>();
+
 
     public FlowManager() {
 
@@ -27,9 +29,20 @@ public class FlowManager {
 
             Flows flows = (Flows) u.unmarshal(new File(Resources.getResource("flow.xml").getFile()));
 
+
+            for (Level l : flows.level) {
+                levelHolder.put(l.level, l);
+            }
+
             for (Flow f : flows.flows) {
                 flowHolder.put(f.id, f);
+
+                for (FlowStep fs : f.steps) {
+                    fs.flow = f;
+                    fs.lvl = levelHolder.get(fs.level);
+                }
             }
+
 
 
         } catch (JAXBException e) {
