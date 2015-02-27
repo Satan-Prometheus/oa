@@ -1,4 +1,4 @@
-package com.hx.view;
+package com.hx.view.tools;
 
 import java.util.HashMap;
 import java.util.Map;

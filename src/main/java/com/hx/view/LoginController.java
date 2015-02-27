@@ -1,16 +1,14 @@
 package com.hx.view;
 
 import com.hx.annotation.LoginIgnore;
-import com.hx.dao.TestDao;
 import com.hx.dao.UserDao;
 import com.hx.domain.User;
-import com.sun.deploy.net.HttpResponse;
+import com.hx.view.tools.ForwardModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +41,7 @@ public class LoginController {
             return new ModelAndView("login", new ForwardModel("errMsg", "’À∫≈ªÚ’ﬂ√‹¬Î¥ÌŒÛ"));
         }
 
+        user.initRelatedFlowSteps();
         session.setAttribute("user", user);
 
         try {

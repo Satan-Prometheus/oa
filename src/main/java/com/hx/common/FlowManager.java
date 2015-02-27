@@ -51,6 +51,14 @@ public class FlowManager {
     }
 
 
+    public Map<String, Flow> getFlows() {
+        return this.flowHolder;
+    }
+
+    public Flow getFlow(String flowId) {
+        return this.flowHolder.get(flowId);
+    }
+
     @XmlRootElement(name = "flows")
     public static class Flows {
 

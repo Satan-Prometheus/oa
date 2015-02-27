@@ -8,6 +8,7 @@ CREATE TABLE `t_user` (
   `name` varchar(15) NOT NULL,
   `password` varchar(15) NOT NULL,
   `department` varchar(15) NOT NULL,
+  `level` int(2) NOT NULL,
   `last_login_time` datetime NOT NULL,
 
   PRIMARY KEY (id)

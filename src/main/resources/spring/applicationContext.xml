@@ -27,4 +27,6 @@
 
     <bean id="flows" class="com.hx.common.FlowManager"/>
 
+    <bean id="SpringContextUtil " class="com.hx.system.SpringContextUtil" />
+
 </beans>

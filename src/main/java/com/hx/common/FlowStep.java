@@ -19,4 +19,14 @@ public class FlowStep {
     public Flow flow;
 
     public Level lvl;
+
+    public FlowStep() {}
+
+    public FlowStep(FlowStep flowStep, String department) {
+        this.order = flowStep.order;
+        this.level = flowStep.level;
+        this.department = department;
+        this.flow = flowStep.flow;
+        this.level = flowStep.level;
+    }
 }
