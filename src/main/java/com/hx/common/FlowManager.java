@@ -41,7 +41,12 @@ public class FlowManager {
     @XmlRootElement(name = "flows")
     public static class Flows {
 
-        @XmlElement(name = "language")
+        @XmlElement(name = "flow")
         public Flow[] flows;
+
+        @XmlElement(name = "level")
+        public Level[] level;
     }
+
+
 }

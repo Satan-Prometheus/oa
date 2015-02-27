@@ -51,13 +51,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.hx.view.LoginInterceptor">
-                <property name="excludedUrls">
-                    <list>
-                        <value>/a/login</value>
-                    </list>
-                </property>
-            </bean>
+            <bean class="com.hx.view.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 </beans>

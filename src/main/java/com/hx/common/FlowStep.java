@@ -16,9 +16,4 @@ public class FlowStep {
     @XmlAttribute(name = "department")
     public String department;
 
-    public FlowStep(int order, int level, String department) {
-        this.order = order;
-        this.level = level;
-        this.department = department;
-    }
 }

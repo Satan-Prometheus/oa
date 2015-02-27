@@ -2,11 +2,16 @@
 
 <flows>
     <flow id="1" desc="请3天假">
-        <step order="1" level="部门经理"/>  <!-- department="" -->
-        <step order="2" level="公司领导"/>
+        <step order="1" level="2"/>  <!-- department="" -->
+        <step order="2" level="3"/>
     </flow>
 
     <flow id="2" desc="请1天假">
-        <step order="1" level="部门经理"/>  <!-- department="" -->
+        <step order="1" level="2"/>  <!-- department="" -->
     </flow>
+
+
+    <level lvl="1" desc="员工"/>
+    <level lvl="2" desc="部门经理"/>
+    <level lvl="3" desc="领导"/>
 </flows>

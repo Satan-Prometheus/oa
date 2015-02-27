@@ -7,7 +7,7 @@ CREATE TABLE `t_user` (
   `id` varchar(30) NOT NULL,
   `name` varchar(15) NOT NULL,
   `password` varchar(15) NOT NULL,
-  `department_id` int(11) NOT NULL,
+  `department` int(11) NOT NULL,
 
   `last_login_time` datetime NOT NULL
   

@@ -14,11 +14,6 @@ import java.util.List;
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
-    private List<String> excludedUrls;
-
-    public void setExcludedUrls(List<String> excludedUrls) {
-        this.excludedUrls = excludedUrls;
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -36,7 +31,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
         HttpSession session = request.getSession();
 
-        Object user_id = session.getAttribute("user_id");
+        Object user_id = session.getAttribute("user");
 
         if (user_id == null) {
 

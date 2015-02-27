@@ -17,9 +17,4 @@ public class Flow {
     @XmlElement(name = "step")
     public FlowStep[] steps;
 
-    public Flow(String id, String desc, FlowStep[] steps) {
-        this.id = id;
-        this.desc = desc;
-        this.steps = steps;
-    }
 }
