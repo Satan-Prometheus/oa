@@ -21,8 +21,14 @@ CREATE TABLE `t_request` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` varchar(15) NOT NULL COMMENT '谁发的请求',
   `flow_id` varchar(15) NOT NULL COMMENT '哪一种流程',
-  `status` int(1) NOT NULL DEFAULT 0 COMMENT '本次请求的当前状态 0:未完成 1:已完成',
-  `step_order` int(2) NOT NULL DEFAULT 0 COMMENT '本次请求流程到达哪一步'
+  `step_order` int(2) NOT NULL DEFAULT 0 COMMENT '本次请求流程到达哪一步',
+
+  `request_type` varchar(64) NOT NULL COMMENT '申请类型',
+  `request_detail_json` varchar(1024) NOT NULL DEFAULT '' COMMENT '用json形式存储的申请具体内容',
+
+  `approve` int(1) NOT NULL DEFAULT 0 COMMENT '最后审批状态 0:未完成 1:reject 2:agree',
+
+  `last_update_time` datetime NOT NULL DEFAULT "0000-00-00 00:00:00" COMMENT '最后一次状态更新的时间'
 
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
