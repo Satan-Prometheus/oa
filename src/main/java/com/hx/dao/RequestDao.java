@@ -33,7 +33,7 @@ public class RequestDao {
 
     public List<Request> queryList(int status, String flowId, int stepOrder) {
 
-        final String sql = String.format("select %s from t_request where flow_id=? and step_order=? and status=?",
+        final String sql = String.format("select %s from t_request where flow_id=? and step_order=? and approve=?",
                 RequestMapper.RESULT_KEY_LIST);
 
         final Object[] params = new Object[]{
