@@ -14,7 +14,7 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into `t_user` values('userId', 'userName', 'password', 'department', now());
+insert into `t_user` values('userId', 'userName', 'password', 'department', 2, now());
 
 
 CREATE TABLE `t_request` (
@@ -33,6 +33,7 @@ CREATE TABLE `t_request` (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into `t_request` values(null, 'user_id', 'flow_id', 1, 'request_type', 'request_detail_json', 0, now());
+#insert into `t_request` values(null, 'userId', 'flow_id', 1, 'request_type', '{}', 0, now());
+insert into `t_request` values(null, 'userId', '1', 1, '病假|1天', '{}', 0, now());
 
 #select * from t_request where status=0 and
