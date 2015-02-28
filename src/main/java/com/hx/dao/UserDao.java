@@ -76,7 +76,7 @@ public class UserDao {
 
     private class UserMapper implements RowMapper<User> {
 
-        public static final String RESULT_KEY_LIST = " id, name, password, department, last_login_time ";
+        public static final String RESULT_KEY_LIST = " id, name, password, department, level, last_login_time ";
 
         @Override
         public User mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -86,6 +86,7 @@ public class UserDao {
             u.setName(resultSet.getString("name"));
             u.setPassword(resultSet.getString("password"));
             u.setDepartment(resultSet.getString("department"));
+            u.setLevel(resultSet.getInt("level"));
             u.setLastLoginTime(resultSet.getDate("last_login_time"));
 
             return u;
