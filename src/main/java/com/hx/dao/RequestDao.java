@@ -62,6 +62,7 @@ public class RequestDao {
         Pair<String, List<Object>> q = SqlUtil.updateWherePlaceHolder(query);
 
         List<Object> plist = new ArrayList<Object>(u.getValue().size() + q.getValue().size());
+        plist.addAll(u.getValue()); plist.addAll(q.getValue());
         Object[] param = new Object[plist.size()];
         plist.toArray(param);
 
@@ -80,7 +81,7 @@ public class RequestDao {
             Request r = new Request();
             r.setId(rs.getInt("id"));
             r.setUserId(rs.getString("user_id"));
-            r.setUserId(rs.getString("flow_id"));
+            r.setFlowId(rs.getString("flow_id"));
             r.setStepOrder(rs.getInt("step_order"));
             r.setRequestType(rs.getString("request_type"));
             r.setRequestDetailJson(rs.getString("request_detail_json"));
