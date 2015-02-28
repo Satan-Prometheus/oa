@@ -28,9 +28,11 @@ CREATE TABLE `t_request` (
 
   `approve` int(1) NOT NULL DEFAULT 0 COMMENT '最后审批状态 0:未完成 1:reject 2:agree',
 
-  `last_update_time` datetime NOT NULL DEFAULT "0000-00-00 00:00:00" COMMENT '最后一次状态更新的时间'
+  `last_update_time` datetime NOT NULL DEFAULT "0000-00-00 00:00:00" COMMENT '最后一次状态更新的时间',
 
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into `t_request` values(null, 'user_id', 'flow_id', 1, 'request_type', 'request_detail_json', 0, now());
 
 #select * from t_request where status=0 and

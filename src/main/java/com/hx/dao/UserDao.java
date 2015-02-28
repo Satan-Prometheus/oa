@@ -1,8 +1,6 @@
 package com.hx.dao;
 
-import com.google.common.base.Joiner;
 import com.hx.domain.User;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -54,7 +52,7 @@ public class UserDao {
 
         final String sql = String.format("select %s from t_user where id in (%s)",
                 UserMapper.RESULT_KEY_LIST,
-                SqlUtil.placeHolder(ids.size())) ;
+                SqlUtil.selectInPlaceHolder(ids.size())) ;
 
 
         final Object[] params = new Object[ids.size()];
