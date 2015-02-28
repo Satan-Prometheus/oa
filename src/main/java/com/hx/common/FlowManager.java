@@ -35,8 +35,9 @@ public class FlowManager {
             }
 
             for (Flow f : flows.flows) {
-                flowHolder.put(f.id, f);
+                f.buildRelate();
 
+                flowHolder.put(f.id, f);
                 for (FlowStep fs : f.steps) {
                     fs.flow = f;
                     fs.lvl = levelHolder.get(fs.level);

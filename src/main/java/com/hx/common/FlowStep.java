@@ -20,6 +20,8 @@ public class FlowStep {
 
     public Level lvl;
 
+    private FlowStep nxt;
+
     public FlowStep() {}
 
     public FlowStep(FlowStep flowStep, String department) {
@@ -28,5 +30,13 @@ public class FlowStep {
         this.department = department;
         this.flow = flowStep.flow;
         this.level = flowStep.level;
+    }
+
+    public FlowStep getNxt() {
+        return nxt;
+    }
+
+    public void setNxt(FlowStep nxt) {
+        this.nxt = nxt;
     }
 }

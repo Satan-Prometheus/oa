@@ -19,10 +19,10 @@ insert into `t_user` values('userId', 'userName', 'password', 'department', now(
 
 CREATE TABLE `t_request` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(15) NOT NULL COMMENT 'Ë­·¢µÄÇëÇó',
-  `flow_id` varchar(15) NOT NULL COMMENT 'ÄÄÒ»ÖÖÁ÷³Ì',
-  `status` int(1) NOT NULL DEFAULT 0 COMMENT '±¾´ÎÇëÇóµÄµ±Ç°×´Ì¬ 0:Î´Íê³É 1:ÒÑÍê³É',
-  `step_order` int(2) NOT NULL DEFAULT 0 COMMENT '±¾´ÎÇëÇóÁ÷³Ìµ½´ïÄÄÒ»²½'
+  `user_id` varchar(15) NOT NULL COMMENT 'è°å‘çš„è¯·æ±‚',
+  `flow_id` varchar(15) NOT NULL COMMENT 'å“ªä¸€ç§æµç¨‹',
+  `status` int(1) NOT NULL DEFAULT 0 COMMENT 'æœ¬æ¬¡è¯·æ±‚çš„å½“å‰çŠ¶æ€ 0:æœªå®Œæˆ 1:å·²å®Œæˆ',
+  `step_order` int(2) NOT NULL DEFAULT 0 COMMENT 'æœ¬æ¬¡è¯·æ±‚æµç¨‹åˆ°è¾¾å“ªä¸€æ­¥'
 
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
