@@ -35,5 +35,6 @@ CREATE TABLE `t_request` (
 
 #insert into `t_request` values(null, 'userId', 'flow_id', 1, 'request_type', '{}', 0, now());
 insert into `t_request` values(null, 'userId', '1', 1, '病假|1天', '{}', 0, now());
+insert into `t_request` values(null, 'userId', '2', 1, '婚假|2天', '{}', 0, now());
 
 #select * from t_request where status=0 and
