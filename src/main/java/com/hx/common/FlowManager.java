@@ -1,6 +1,9 @@
 package com.hx.common;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
+import com.hx.domain.Request;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -8,6 +11,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +24,7 @@ public class FlowManager {
 
     private Map<Integer, Level> levelHolder = new HashMap<Integer, Level>();
 
+    private Multimap<String, RequestType> requestTypeHolder = HashMultimap.create();
 
     public FlowManager() {
 
@@ -42,6 +47,11 @@ public class FlowManager {
                     fs.flow = f;
                     fs.lvl = levelHolder.get(fs.level);
                 }
+
+                for (RequestType rt : f.requestTypes) {
+                    rt.flow = f;
+                    requestTypeHolder.put(rt.type, rt);
+                }
             }
 
 
@@ -51,6 +61,13 @@ public class FlowManager {
         }
     }
 
+    public Collection<String> getRequestTypeNames() {
+        return this.requestTypeHolder.keySet();
+    }
+
+    public Collection<RequestType> getRequestTypeByName(String name) {
+        return this.requestTypeHolder.get(name);
+    }
 
     public Map<String, Flow> getFlows() {
         return this.flowHolder;

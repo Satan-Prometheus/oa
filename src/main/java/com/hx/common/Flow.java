@@ -21,6 +21,9 @@ public class Flow {
     @XmlElement(name = "step")
     public FlowStep[] steps;
 
+    @XmlElement(name = "request_type")
+    public RequestType[] requestTypes;
+
     private Map<Integer, FlowStep> stepHolder;
 
     public FlowStep findNextStep(int curOrder) {

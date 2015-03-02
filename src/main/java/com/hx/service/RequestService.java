@@ -5,18 +5,17 @@ import com.google.common.collect.Maps;
 import com.hx.common.Flow;
 import com.hx.common.FlowManager;
 import com.hx.common.FlowStep;
+import com.hx.common.RequestType;
 import com.hx.dao.RequestDao;
 import com.hx.dao.UserDao;
 import com.hx.domain.Request;
 import com.hx.domain.User;
+import com.hx.view.objectview.NewRequestInfo;
 import com.hx.view.objectview.RequestListView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by xh on 2015/2/27.
@@ -107,5 +106,23 @@ public class RequestService {
         }
 
         return requestDao.updateRequest(queryMap, updateMap) > 0;
+    }
+
+
+    public boolean createNewRequest(User user, NewRequestInfo requestInfo) {
+        String requestType = requestInfo.getRequestType();
+        if (requestType == null) {
+            throw new IllegalArgumentException("request type should not be null");
+        }
+
+        Collection<RequestType> requestTypes = flowManager.getRequestTypeByName(requestType);
+        if (requestTypes == null || requestTypes.isEmpty()) {
+            throw new IllegalArgumentException("unknown request type name");
+        }
+
+
+
+        // TODO
+        return false;
     }
 }
