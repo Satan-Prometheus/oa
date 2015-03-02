@@ -37,8 +37,7 @@ public class LoginController {
         User user = userDao.queryByIdPwd(userId, password);
 
         if (user == null) {
-            // ÕËºÅ»òÕßÃÜÂë´íÎó µÇÂ¼Ê§°Ü
-            return new ModelAndView("login", new ForwardModel("errMsg", "ÕËºÅ»òÕßÃÜÂë´íÎó"));
+            return new ModelAndView("login", new ForwardModel("errMsg", "ç”¨æˆ·åæˆ–å¯†ç é”™è¯¯"));
         }
 
         user.initRelatedFlowSteps();
