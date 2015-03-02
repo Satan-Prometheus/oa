@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +71,7 @@ public class RequestService {
      * @param operate 同意否 1:拒绝 2：同意
      * @return
      */
-    public boolean operateRequest(int requestId, int stepOrder ,int operate) {
+    public boolean operateRequest(int requestId, int stepOrder, Request.Operate operate) {
 
         List<Request> requests = requestDao.queryByIds(ImmutableList.of(requestId));
         if (requests == null || requests.size() == 0) {
@@ -82,28 +83,29 @@ public class RequestService {
         Flow flow = flowManager.getFlow(flowId);
         if (flow == null) return false;
 
-        FlowStep nextStep = flow.findNextStep(stepOrder);
 
         Map<String, Object> queryMap = Maps.newHashMapWithExpectedSize(3);
-        queryMap.put("request_id", requestId);
+        queryMap.put("id", requestId);
         queryMap.put("step_order", stepOrder);
         queryMap.put("approve", 0);
 
+        Map<String, Object> updateMap = Maps.newHashMap();
+        updateMap.put("last_update_time", new Date());
 
-
+        FlowStep nextStep = flow.findNextStep(stepOrder);
+        // last step
         if (nextStep == null) {
-            // 如果这是最后一步
-
-//            Map<String, Object> updateMap = Maps.newHashMapWithExpectedSize();
-//            updateMap.put("", );
-//
-//            update set
+            updateMap.put("approve", operate.code());
         } else {
             // flow continue
+
+            if (operate == Request.Operate.disagree) { // reject
+                updateMap.put("approve", operate.code());
+            } else {    // go to next step
+                updateMap.put("step_order", nextStep.order);
+            }
         }
 
-
-        return false;
-
+        return requestDao.updateRequest(queryMap, updateMap) > 0;
     }
 }

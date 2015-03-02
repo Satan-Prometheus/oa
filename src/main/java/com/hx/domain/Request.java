@@ -8,6 +8,26 @@ import java.util.Map;
  */
 public class Request {
 
+    public enum Operate {
+        agree(2), disagree(1);
+
+        private int code;
+        Operate(int code) {
+            this.code = code;
+        }
+
+        public int code() { return this.code; }
+
+        public static Operate typeOf(int code) {
+            for (Operate o : Operate.values()) {
+                if (o.code == code) {
+                    return o;
+                }
+            }
+            return null;
+        }
+    }
+
 
     private int id;
 
