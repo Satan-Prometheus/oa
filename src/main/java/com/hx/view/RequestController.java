@@ -34,9 +34,14 @@ public class RequestController {
             return new JsonResultView().errCode(1).errMsg("unknown approve type");
         }
 
-        boolean b = requestService.operateRequest(requestId, stepOrder, operate);
-        if (!b) {
-            return new JsonResultView().errCode(1).errMsg("operate fail");
+        try {
+            boolean b = requestService.operateRequest(requestId, stepOrder, operate);
+            if (!b) {
+                return new JsonResultView().errCode(1).errMsg("operate fail");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new JsonResultView().errCode(1).errMsg(e.getMessage());
         }
 
         return new JsonResultView();
