@@ -21,7 +21,7 @@ public class User {
 
     private String department;
 
-    private int level;
+    private Integer level;
 
     private Date lastLoginTime;
 
@@ -50,6 +50,17 @@ public class User {
 
         }
 
+    }
+
+    public static Map<String, User> idMapper(List<User> users) {
+        if (users == null) {
+            return null;
+        }
+        Map<String, User> r = new HashMap<String, User>();
+        for (User u : users) {
+            r.put(u.getId(), u);
+        }
+        return r;
     }
 
     public String getId() {
@@ -92,11 +103,12 @@ public class User {
         this.lastLoginTime = lastLoginTime;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
+
 }

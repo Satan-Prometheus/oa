@@ -14,7 +14,7 @@ public class SqlUtil {
 
     /**
      * select * from t_table where p in (?,?,?);
-     * 生成n个问好
+     * 生成n个问号
      */
     public static String selectInPlaceHolder(int n) {
         StringBuilder sb = new StringBuilder();
@@ -70,5 +70,20 @@ public class SqlUtil {
         }
 
         return new ImmutablePair<String, List<Object>>(sb.toString(), param);
+    }
+
+
+    public static class Condition {
+        private String column;
+
+        public enum Operate {
+
+        }
+
+        private String op;
+    }
+
+    public static class SimpleQueryBuilder {
+
     }
 }

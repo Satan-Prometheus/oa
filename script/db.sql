@@ -27,14 +27,15 @@ CREATE TABLE `t_request` (
   `request_detail_json` varchar(1024) NOT NULL DEFAULT '' COMMENT '用json形式存储的申请具体内容',
 
   `approve` int(1) NOT NULL DEFAULT 0 COMMENT '最后审批状态 0:未完成 1:reject 2:agree',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
 
   `last_update_time` datetime NOT NULL DEFAULT "0000-00-00 00:00:00" COMMENT '最后一次状态更新的时间',
 
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-#insert into `t_request` values(null, 'userId', 'flow_id', 1, 'request_type', '{}', 0, now());
-insert into `t_request` values(null, 'userId', '1', 1, '病假|1天', '{}', 0, now());
-insert into `t_request` values(null, 'userId', '2', 1, '婚假|2天', '{}', 0, now());
+#insert into `t_request` values(null, 'userId', 'flow_id', 1, 'request_type', '{}', 0, now(), now());
+insert into `t_request` values(null, 'userId', '1', 1, '病假|1天', '{}', 0, now(), now());
+insert into `t_request` values(null, 'userId', '2', 1, '婚假|2天', '{}', 0, now(), now());
 
 #select * from t_request where status=0 and

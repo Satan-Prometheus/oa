@@ -3,7 +3,6 @@ package com.hx.common;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.io.Resources;
-import com.hx.domain.Request;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -59,6 +58,21 @@ public class FlowManager {
         } catch (JAXBException e) {
             throw new RuntimeException("init from flow.xml fail,", e);
         }
+    }
+
+    public Flow chooseFlow(FlowChooser chooser) {
+
+        Collection<RequestType> requestTypes = requestTypeHolder.get(chooser.requestType);
+
+        if (requestTypes == null) return null;
+
+        for (RequestType rt : requestTypes) {
+            if (chooser.accept(rt)) {
+                return rt.flow;
+            }
+        }
+
+        return null;
     }
 
     public Collection<String> getRequestTypeNames() {

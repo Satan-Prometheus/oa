@@ -27,6 +27,9 @@ public class Flow {
     private Map<Integer, FlowStep> stepHolder;
 
     public FlowStep findNextStep(int curOrder) {
+        if (curOrder < 0) {
+            return steps[0];
+        }
 
         FlowStep cur = stepHolder.get(curOrder);
         if (cur == null) {
@@ -36,7 +39,7 @@ public class Flow {
         return cur.getNxt();
     }
 
-    public void buildRelate() {
+    protected void buildRelate() {
 
         Arrays.sort(steps, new Comparator<FlowStep>() {
             @Override

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,29 +29,24 @@ public class LoginController {
 
     @LoginIgnore
     @RequestMapping(value = "/do", method = RequestMethod.POST)
-    public ModelAndView doLogin(@RequestParam(value = "userId", required = true) String userId,
+    public Object doLogin(@RequestParam(value = "userId", required = true) String userId,
                           @RequestParam(value = "password", required = true) String password,
                           HttpSession session,
-                          HttpServletResponse response) {
+                          RedirectAttributesModelMap modelMap) {
 
 
         User user = userDao.queryByIdPwd(userId, password);
 
         if (user == null) {
+            modelMap.addFlashAttribute("a","aaa");
+//            return "redirect:/a/login/pg";
             return new ModelAndView("login", new ForwardModel("errMsg", "用户名或密码错误"));
         }
 
         user.initRelatedFlowSteps();
         session.setAttribute("user", user);
 
-        try {
-            response.sendRedirect("/a/index/welcome");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//        return new ModelAndView("index");
-        return null;
+        return "redirect:/a/index/welcome";
     }
 
 

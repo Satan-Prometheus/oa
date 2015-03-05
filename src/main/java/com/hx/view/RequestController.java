@@ -1,12 +1,15 @@
 package com.hx.view;
 
+import com.google.common.collect.Lists;
 import com.hx.common.FlowManager;
 import com.hx.domain.Request;
 import com.hx.domain.User;
 import com.hx.service.RequestService;
 import com.hx.view.objectview.NewRequestInfo;
+import com.hx.view.objectview.RequestListView;
 import com.hx.view.tools.ForwardModel;
 import com.hx.view.tools.JsonResultView;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by xh on 2015/2/28.
@@ -21,7 +25,7 @@ import java.util.Collection;
 
 @Controller
 @RequestMapping("/request")
-public class RequestController {
+public class RequestController extends CommonController {
 
     @Autowired
     private RequestService requestService;
@@ -64,12 +68,56 @@ public class RequestController {
 
 
     @RequestMapping(value = "/create/do")
-    public ModelAndView newRequest(HttpSession httpSession,
+    public Object newRequest(HttpSession httpSession,
             @ModelAttribute("requestInfo") NewRequestInfo requestInfo) {
 
+        boolean suc;
+        try {
+            suc = requestService.createNewRequest(user(httpSession), requestInfo);
 
-        requestService.createNewRequest((User)httpSession.getAttribute("user"), requestInfo);
+        } catch (Exception e) {
+            suc = false;
+            e.printStackTrace();
+        }
+
+        if (suc) {
+            // 列表页
+            return "";
+        }
 
         return null;
+    }
+
+    @RequestMapping(value = "/my/list/{choose}")
+    public Object myRequestList(@PathVariable("choose") String choose,
+                                HttpSession httpSession) {
+
+        User user = user(httpSession);
+        List<RequestListView> requestListViews = null;
+
+        if (StringUtils.equals(choose, "ing")) {
+
+            requestListViews =requestService.queryMyRequests(user, 0);
+        } else if (StringUtils.equals(choose, "done")) {
+
+            requestListViews = Lists.newArrayList();
+            List<RequestListView> t;
+
+            t= requestService.queryMyRequests(user, 1);
+            if (t != null) requestListViews.addAll(t);
+
+            t= requestService.queryMyRequests(user, 2);
+            if (t != null) requestListViews.addAll(t);
+
+
+        } else {
+            requestListViews = requestService.queryMyRequests(user, -1);
+        }
+
+
+
+
+        return new ModelAndView();
+
     }
 }

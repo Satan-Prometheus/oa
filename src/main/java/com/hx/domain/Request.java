@@ -1,5 +1,8 @@
 package com.hx.domain;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -11,14 +14,14 @@ public class Request {
     public enum Operate {
         agree(2), disagree(1);
 
-        private int code;
-        Operate(int code) {
+        private Integer code;
+        Operate(Integer code) {
             this.code = code;
         }
 
-        public int code() { return this.code; }
+        public Integer code() { return this.code; }
 
-        public static Operate typeOf(int code) {
+        public static Operate typeOf(Integer code) {
             for (Operate o : Operate.values()) {
                 if (o.code == code) {
                     return o;
@@ -29,29 +32,31 @@ public class Request {
     }
 
 
-    private int id;
+    private Integer id;
 
     private String userId;
 
     private String flowId;
 
-    private int stepOrder;
+    private Integer stepOrder;
 
     private String requestType;
 
     private String requestDetailJson;
 
-    private int approve;
+    private Integer approve;
+
+    private Date createTime;
 
     private Date lastUpdateTime;
 
     private Map<String, Object> requestDetail;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -71,11 +76,11 @@ public class Request {
         this.flowId = flowId;
     }
 
-    public int getStepOrder() {
+    public Integer getStepOrder() {
         return stepOrder;
     }
 
-    public void setStepOrder(int stepOrder) {
+    public void setStepOrder(Integer stepOrder) {
         this.stepOrder = stepOrder;
     }
 
@@ -95,12 +100,20 @@ public class Request {
         this.requestDetailJson = requestDetailJson;
     }
 
-    public int getApprove() {
+    public Integer getApprove() {
         return approve;
     }
 
-    public void setApprove(int approve) {
+    public void setApprove(Integer approve) {
         this.approve = approve;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public Date getLastUpdateTime() {
@@ -112,10 +125,16 @@ public class Request {
     }
 
     public Map<String, Object> getRequestDetail() {
+        if (this.requestDetail == null) {
+            this.requestDetail = JSON.parseObject(this.requestDetailJson, new TypeReference<Map<String, Object>>() {});
+        }
         return requestDetail;
     }
 
     public void setRequestDetail(Map<String, Object> requestDetail) {
+        if (this.requestDetailJson == null) {
+            this.requestDetailJson = JSON.toJSONString(requestDetail);
+        }
         this.requestDetail = requestDetail;
     }
 }

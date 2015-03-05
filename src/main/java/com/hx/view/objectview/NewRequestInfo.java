@@ -1,5 +1,8 @@
 package com.hx.view.objectview;
 
+import com.hx.common.FlowChooser;
+import com.hx.common.TimeDurationFlowChooser;
+
 /**
  * Created by xh on 2015/3/3.
  */
@@ -13,6 +16,15 @@ public class NewRequestInfo {
 
     private String requestReason;
 
+    public FlowChooser createFlowChooser() {
+
+        if (day != null || hour != null) {
+
+            return new TimeDurationFlowChooser(requestType, day == null ? 0 : day, hour == null ? 0 : hour);
+        }
+
+        return null;
+    }
 
     public String getRequestReason() {
         return requestReason;

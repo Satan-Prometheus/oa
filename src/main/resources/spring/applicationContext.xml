@@ -12,17 +12,15 @@
 
     <context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true"/>
 
+    <!-- import dao config -->
+    <import resource="dao.xml"/>
+
     <!--<context:component-scan base-package="com.hx" use-default-filters="false">-->
         <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
     <!--</context:component-scan>-->
     <context:component-scan base-package="com.hx"/>
 
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="${jdbc.driverClassName}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-    </bean>
+
 
 
     <bean id="flows" class="com.hx.common.FlowManager"/>

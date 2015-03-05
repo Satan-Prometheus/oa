@@ -1,13 +1,8 @@
 package com.hx.service;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
-import com.hx.common.Flow;
-import com.hx.common.FlowManager;
-import com.hx.common.FlowStep;
-import com.hx.common.RequestType;
-import com.hx.dao.RequestDao;
-import com.hx.dao.UserDao;
+import com.hx.common.*;
+import com.hx.dao.*;
 import com.hx.domain.Request;
 import com.hx.domain.User;
 import com.hx.view.objectview.NewRequestInfo;
@@ -25,10 +20,10 @@ import java.util.*;
 public class RequestService {
 
     @Autowired
-    private UserDao userDao;
+    private RequestMapper requestMapper;
 
     @Autowired
-    private RequestDao requestDao;
+    private UserMapper userMapper;
 
     @Autowired
     private FlowManager flowManager;
@@ -42,8 +37,12 @@ public class RequestService {
         }
 
         List<Request> requests = new ArrayList<Request>();
+        ListQuery query = new ListQuery().condition("approve", 0);
+
+
         for (FlowStep fs : relatedFlowSteps) {
-            List<Request> r = requestDao.queryList(0, fs.flow.id, fs.order);
+            query.condition("flowId", fs.flow.id).condition("stepOrder", fs.order);
+            List<Request> r = requestMapper.selectRequests(query);
             if (r != null) {
                 requests.addAll(r);
             }
@@ -52,7 +51,7 @@ public class RequestService {
         List<String> userIds = new ArrayList<String>(requests.size());
         for (Request r : requests) userIds.add(r.getUserId());
 
-        Map<String, User> userMap = userDao.queryMapByIds(userIds);
+        Map<String, User> userMap = User.idMapper(userMapper.selectByIds(userIds));
 
         List<RequestListView> viewList = new ArrayList<RequestListView>(requests.size());
         for (Request r : requests) {
@@ -72,7 +71,7 @@ public class RequestService {
      */
     public boolean operateRequest(int requestId, int stepOrder, Request.Operate operate) {
 
-        List<Request> requests = requestDao.queryByIds(ImmutableList.of(requestId));
+        List<Request> requests = requestMapper.selectByIds(ImmutableList.of(requestId));
         if (requests == null || requests.size() == 0) {
             return false;
         }
@@ -82,30 +81,28 @@ public class RequestService {
         Flow flow = flowManager.getFlow(flowId);
         if (flow == null) return false;
 
+        ListQuery listQuery = new ListQuery()
+                .condition("id", requestId)
+                .condition("stepOrder", stepOrder)
+                .condition("approve", 0);
 
-        Map<String, Object> queryMap = Maps.newHashMapWithExpectedSize(3);
-        queryMap.put("id", requestId);
-        queryMap.put("step_order", stepOrder);
-        queryMap.put("approve", 0);
-
-        Map<String, Object> updateMap = Maps.newHashMap();
-        updateMap.put("last_update_time", new Date());
+        Request request = new Request();
 
         FlowStep nextStep = flow.findNextStep(stepOrder);
         // last step
         if (nextStep == null) {
-            updateMap.put("approve", operate.code());
+            request.setApprove(operate.code());
         } else {
             // flow continue
 
             if (operate == Request.Operate.disagree) { // reject
-                updateMap.put("approve", operate.code());
+                request.setApprove(operate.code());
             } else {    // go to next step
-                updateMap.put("step_order", nextStep.order);
+                request.setStepOrder(nextStep.order);
             }
         }
 
-        return requestDao.updateRequest(queryMap, updateMap) > 0;
+        return requestMapper.updateRequest(listQuery, request) > 0;
     }
 
 
@@ -120,9 +117,57 @@ public class RequestService {
             throw new IllegalArgumentException("unknown request type name");
         }
 
+        FlowChooser flowChooser = requestInfo.createFlowChooser();
+
+        Flow flow = flowManager.chooseFlow(flowChooser);
+        if (flow == null) {
+            throw new IllegalStateException("can't match flow by submitted info");
+        }
 
 
-        // TODO
+        Date now = new Date();
+
+        Request request = new Request();
+        request.setUserId(user.getId());
+        request.setFlowId(flow.id);
+        request.setStepOrder(flow.findNextStep(-1).order);
+        request.setRequestType(requestType);
+        request.setRequestDetail(new HashMap()); //TODO
+        request.setApprove(0);
+        request.setCreateTime(now);
+        request.setLastUpdateTime(now);
+
+        requestMapper.insertRequest(request);
+
         return false;
+    }
+
+    /**
+     *
+     * @param user
+     * @param approve
+     * @return
+     */
+    public List<RequestListView> queryMyRequests(User user, int approve) {
+
+        if (approve < 0 || approve > 2) {
+            // all requests
+            approve = -1;
+        }
+
+        ListQuery query = new ListQuery();
+        if (approve != -1) query.condition("approve", approve);
+
+        query.condition("userId", user.getId());
+        query.orderBy("lastUpdateTime", ListQuery.Order.DESC);
+
+        List<Request> requests = requestMapper.selectRequests(query);
+
+        List<RequestListView> viewList = new ArrayList<RequestListView>(requests.size());
+        for (Request r : requests) {
+            viewList.add(new RequestListView(r, user));
+        }
+
+        return viewList;
     }
 }
