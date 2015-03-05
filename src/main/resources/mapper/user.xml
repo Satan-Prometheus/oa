@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hx.dao.UserMapper">
+
+    <sql id="columns">
+        id, name, password, department, level, last_login_time lastLoginTime
+    </sql>
+
+
+
+    <select id="selectByIds" resultType="com.hx.domain.User" parameterType="java.util.List">
+        select <include refid="columns"/> from t_user
+        where id in (
+        <foreach collection="ids" item="item" index="index" separator=",">
+            ${item},
+        </foreach>
+        )
+    </select>
+
+</mapper>

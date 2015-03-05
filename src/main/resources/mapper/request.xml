@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hx.dao.RequestMapper">
+
+    <sql id="columns">
+            id,
+            user_id userId,
+            flow_id flowId,
+            step_order stepOrder,
+            request_type requestType,
+            request_detail_json requestDetailJson,
+            approve,
+            create_time createTime,
+            last_update_time lastUpdateTime
+    </sql>
+
+    <insert id="insertRequest" parameterType="com.hx.domain.Request" keyProperty="id">
+        insert into t_request(id,
+            user_id,
+            flow_id,
+            step_order,
+            request_type,
+            request_detail_json,
+            approve,
+            create_time,
+            last_update_time)
+        values(#{userId},#{flowId},#{stepOrder},#{requestType},#{requestDetailJson},#{approve},
+        #{createTime},#{lastUpdateTime})
+    </insert>
+
+    <select id="selectRequests" resultType="com.hx.domain.Request" parameterType="java.util.Map">
+        select <include refid="columns"/> from t_request
+        <where>1=1
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userId != null  and userId !='' ">AND user_id = #{userId}</if>
+            <if test="flowId != null and flowId !='' ">AND flow_id = #{flowId}</if>
+            <if test="requestType != null and requestType !='' ">AND request_type = #{requestType}</if>
+
+            <if test="approve != null">AND approve >= #{approve}</if>
+            <if test="lastUpdateTime != null">AND last_update_time >= #{lastUpdateTime}</if>
+
+        </where>
+        <if test="_sorts != null and _sorts.size > 0">
+            order by
+            <foreach collection="_sorts" item="item" index="index" separator=",">
+                ${item.name} ${item.order}
+            </foreach>
+        </if>
+        <if test="_offset != null and _limit != null">
+            limit #{_offset}, #{_limit}
+        </if>
+    </select>
+
+    <select id="selectByIds" resultType="com.hx.domain.Request" parameterType="java.util.List">
+        select <include refid="columns"/> from t_request
+        where id in (
+            <foreach collection="ids" item="item" index="index" separator=",">
+                ${item},
+            </foreach>
+        )
+    </select>
+
+
+    <update id="updateRequest">
+        update t_request
+        <set>
+        <if test="value.id != null">id = #{value.id},</if>
+        <if test="value.userId != null">user_id = #{value.userId},</if>
+        <if test="value.flowId != null">flow_id = #{value.flowId},</if>
+        <if test="value.stepOrder != null">step_order = #{value.stepOrder},</if>
+        <if test="value.requestType != null">request_type = #{value.requestType},</if>
+        <if test="value.requestDetailJson != null">request_detail_json = #{value.requestDetailJson},</if>
+        <if test="value.approve != null">approve = #{value.approve},</if>
+        <if test="value.lastUpdateTime != null">last_update_time = #{value.lastUpdateTime},</if>
+        </set>
+
+        <where>
+            <if test="query.id != null">and id = #{query.id}</if>
+            <if test="query.userId != null">and user_id = #{query.userId}</if>
+            <if test="query.flowId != null">and flow_id = #{query.flowId}</if>
+            <if test="query.stepOrder != null">and step_order = #{query.stepOrder}</if>
+            <if test="query.requestType != null">and request_type = #{query.requestType}</if>
+            <if test="query.requestDetailJson != null">and request_detail_json = #{query.requestDetailJson}</if>
+            <if test="query.approve != null">and approve = #{query.approve}</if>
+            <if test="query.lastUpdateTime != null">and last_update_time = #{query.lastUpdateTime}</if>
+        </where>
+
+    </update>
+</mapper>
