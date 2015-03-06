@@ -38,4 +38,13 @@ CREATE TABLE `t_request` (
 insert into `t_request` values(null, 'userId', '1', 1, '病假|1天', '{}', 0, now(), now());
 insert into `t_request` values(null, 'userId', '2', 1, '婚假|2天', '{}', 0, now(), now());
 
-#select * from t_request where status=0 and
+
+CREATE TABLE `t_request_op_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(15) NOT NULL COMMENT '是谁操作的',
+  `request_id` int(11) NOT NULL COMMENT '操作的那一个request',
+  `op_type` int(1) NOT NULL DEFAULT 0 COMMENT '操作是什么 1:拒绝 2:同意',
+  `create_time` datetime NOT NULL DEFAULT "0000-00-00 00:00:00" COMMENT '操作产生时间',
+  `remark` varchar(512) NOT NULL DEFAULT "" COMMENT '备注',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

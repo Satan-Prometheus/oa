@@ -8,7 +8,6 @@
     </sql>
 
 
-
     <select id="selectByIds" resultType="com.hx.domain.User" parameterType="java.util.List">
         select <include refid="columns"/> from t_user
         where id in (
@@ -18,4 +17,8 @@
         )
     </select>
 
+    <select id="selectByIdPwd" resultType="com.hx.domain.User">
+        select <include refid="columns"/> from t_user
+        where id = #{id} and password = #{pwd}
+    </select>
 </mapper>

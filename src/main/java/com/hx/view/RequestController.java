@@ -59,7 +59,7 @@ public class RequestController extends CommonController {
     }
 
     @RequestMapping(value = "/create/pg")
-            public ModelAndView newRequestPage() {
+    public ModelAndView newRequestPage() {
 
         Collection<String> requestTypeNames = flowManager.getRequestTypeNames();
 
@@ -82,7 +82,7 @@ public class RequestController extends CommonController {
 
         if (suc) {
             // 列表页
-            return "";
+//            return "redirect:/a/my/list/ing";
         }
 
         return null;
@@ -117,7 +117,7 @@ public class RequestController extends CommonController {
 
 
 
-        return new ModelAndView();
+        return new ModelAndView("myRequestList", new ForwardModel<String, Object>("list", requestListViews));
 
     }
 }

@@ -1,8 +1,9 @@
 package com.hx.service;
 
-import com.google.common.collect.ImmutableList;
 import com.hx.common.*;
-import com.hx.dao.*;
+import com.hx.dao.RequestExample;
+import com.hx.dao.RequestMapper;
+import com.hx.dao.UserMapper;
 import com.hx.domain.Request;
 import com.hx.domain.User;
 import com.hx.view.objectview.NewRequestInfo;
@@ -28,7 +29,7 @@ public class RequestService {
     @Autowired
     private FlowManager flowManager;
 
-    public List<RequestListView> queryIndexList(User user) {
+    public List<RequestListView> queryToOperateRequests(User user) {
 
         List<FlowStep> relatedFlowSteps = user.getRelatedFlowSteps();
 
@@ -37,12 +38,14 @@ public class RequestService {
         }
 
         List<Request> requests = new ArrayList<Request>();
-        ListQuery query = new ListQuery().condition("approve", 0);
-
+        RequestExample re = new RequestExample();
 
         for (FlowStep fs : relatedFlowSteps) {
-            query.condition("flowId", fs.flow.id).condition("stepOrder", fs.order);
-            List<Request> r = requestMapper.selectRequests(query);
+            re.clear();
+            re.createCriteria().andApproveEqualTo(0)
+                    .andFlowIdEqualTo(fs.flow.id)
+                    .andStepOrderEqualTo(fs.order);
+            List<Request> r = requestMapper.selectByExample(re);
             if (r != null) {
                 requests.addAll(r);
             }
@@ -71,20 +74,11 @@ public class RequestService {
      */
     public boolean operateRequest(int requestId, int stepOrder, Request.Operate operate) {
 
-        List<Request> requests = requestMapper.selectByIds(ImmutableList.of(requestId));
-        if (requests == null || requests.size() == 0) {
-            return false;
-        }
-
-        Request r = requests.get(0);
+        Request r = requestMapper.selectByPrimaryKey(requestId);
+        if (r == null) return false;
         String flowId = r.getFlowId();
         Flow flow = flowManager.getFlow(flowId);
         if (flow == null) return false;
-
-        ListQuery listQuery = new ListQuery()
-                .condition("id", requestId)
-                .condition("stepOrder", stepOrder)
-                .condition("approve", 0);
 
         Request request = new Request();
 
@@ -102,7 +96,12 @@ public class RequestService {
             }
         }
 
-        return requestMapper.updateRequest(listQuery, request) > 0;
+        RequestExample re = new RequestExample();
+        re.createCriteria()
+                .andIdEqualTo(requestId)
+                .andStepOrderEqualTo(stepOrder)
+                .andApproveEqualTo(0);
+        return requestMapper.updateByExampleSelective(request, re) > 0;
     }
 
 
@@ -137,7 +136,7 @@ public class RequestService {
         request.setCreateTime(now);
         request.setLastUpdateTime(now);
 
-        requestMapper.insertRequest(request);
+        requestMapper.insert(request);
 
         return false;
     }
@@ -155,13 +154,13 @@ public class RequestService {
             approve = -1;
         }
 
-        ListQuery query = new ListQuery();
-        if (approve != -1) query.condition("approve", approve);
+        RequestExample re = new RequestExample();
+        re.setOrderByClause("last_update_time");
+        RequestExample.Criteria criteria = re.createCriteria().andUserIdEqualTo(user.getId());
 
-        query.condition("userId", user.getId());
-        query.orderBy("lastUpdateTime", ListQuery.Order.DESC);
+        if (approve != -1) criteria.andApproveEqualTo(approve);
 
-        List<Request> requests = requestMapper.selectRequests(query);
+        List<Request> requests = requestMapper.selectByExample(re);
 
         List<RequestListView> viewList = new ArrayList<RequestListView>(requests.size());
         for (Request r : requests) {
