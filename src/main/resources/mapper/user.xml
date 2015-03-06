@@ -12,7 +12,7 @@
         select <include refid="columns"/> from t_user
         where id in (
         <foreach collection="ids" item="item" index="index" separator=",">
-            ${item},
+            #{item}
         </foreach>
         )
     </select>
