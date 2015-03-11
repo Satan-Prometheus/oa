@@ -16,6 +16,10 @@ public class NewRequestInfo {
 
     private String requestReason;
 
+    private String from;
+
+    private String to;
+
     public FlowChooser createFlowChooser() {
 
         if (day != null || hour != null) {
@@ -56,5 +60,21 @@ public class NewRequestInfo {
 
     public void setHour(Integer hour) {
         this.hour = hour;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 }

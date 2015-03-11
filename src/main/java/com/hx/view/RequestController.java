@@ -10,6 +10,8 @@ import com.hx.view.objectview.RequestListView;
 import com.hx.view.tools.ForwardModel;
 import com.hx.view.tools.JsonResultView;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,8 +39,8 @@ public class RequestController extends CommonController {
     @ResponseBody
     @RequestMapping(value = "/approve/{request_id}/{step_order}/{approve}")
     public Object approve(@PathVariable("request_id") int requestId,
-                                @PathVariable("step_order") int stepOrder,
-                                @PathVariable("approve") int approve) {
+                          @PathVariable("step_order") int stepOrder,
+                          @PathVariable("approve") int approve) {
 
 
         Request.Operate operate = Request.Operate.typeOf(approve);
@@ -59,33 +62,26 @@ public class RequestController extends CommonController {
     }
 
     @RequestMapping(value = "/create/pg")
-    public ModelAndView newRequestPage() {
+    public ModelAndView newRequestPage(HttpSession httpSession) {
 
         Collection<String> requestTypeNames = flowManager.getRequestTypeNames();
 
-        return new ModelAndView("newRequest", new ForwardModel<String, Object>("requestTypeNames", requestTypeNames));
+        return new ModelAndView("newRequest", new ForwardModel<String, Object>("requestTypeNames", requestTypeNames)
+                .append("user", user(httpSession))
+                .append("date", DateFormatUtils.format(new Date(), "yyyy-MM-dd")));
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/create/do", method = RequestMethod.POST)
+    public Object newRequest(HttpSession httpSession, NewRequestInfo requestInfo) {
 
-    @RequestMapping(value = "/create/do")
-    public Object newRequest(HttpSession httpSession,
-            @ModelAttribute("requestInfo") NewRequestInfo requestInfo) {
-
-        boolean suc;
         try {
-            suc = requestService.createNewRequest(user(httpSession), requestInfo);
-
+            requestService.createNewRequest(user(httpSession), requestInfo);
+            return new JsonResultView();
         } catch (Exception e) {
-            suc = false;
             e.printStackTrace();
+            return new JsonResultView().errCode(1).errMsg(e.getMessage());
         }
-
-        if (suc) {
-            // 列表页
-//            return "redirect:/a/my/list/ing";
-        }
-
-        return null;
     }
 
     @RequestMapping(value = "/my/list/{choose}")
@@ -97,24 +93,22 @@ public class RequestController extends CommonController {
 
         if (StringUtils.equals(choose, "ing")) {
 
-            requestListViews =requestService.queryMyRequests(user, 0);
+            requestListViews = requestService.queryMyRequests(user, 0);
         } else if (StringUtils.equals(choose, "done")) {
 
             requestListViews = Lists.newArrayList();
             List<RequestListView> t;
 
-            t= requestService.queryMyRequests(user, 1);
+            t = requestService.queryMyRequests(user, 1);
             if (t != null) requestListViews.addAll(t);
 
-            t= requestService.queryMyRequests(user, 2);
+            t = requestService.queryMyRequests(user, 2);
             if (t != null) requestListViews.addAll(t);
 
 
         } else {
             requestListViews = requestService.queryMyRequests(user, -1);
         }
-
-
 
 
         return new ModelAndView("myRequestList", new ForwardModel<String, Object>("list", requestListViews));

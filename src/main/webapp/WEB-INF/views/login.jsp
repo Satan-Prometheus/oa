@@ -24,7 +24,11 @@
     <div class="site-wrapper-inner">
 
         <div class="cover-container">
-
+            <c:if test="${errMsg  == '1'}">
+                <div class="row">
+                    <div class="alert alert-danger col-sm-offset-3 col-sm-5" role="alert">用户名或密码错误</div>
+                </div>
+            </c:if>
 
             <div class="inner cover">
                 <form action="/a/login/do" method="post" class="form-horizontal">
@@ -37,6 +41,7 @@
                                    aria-describedby="basic-addon1">
                         </div>
                     </div>
+
 
 
                     <div class="form-group">

@@ -15,8 +15,6 @@ public class RequestListView {
 /*user*/
     private String userName;
 
-    private String name;
-
     private String password;
 
     private String department;
@@ -29,7 +27,7 @@ public class RequestListView {
 /*user end*/
 
 /*request */
-    private int id;
+    private int requestId;
 
     private String userId;
 
@@ -42,6 +40,8 @@ public class RequestListView {
     private String requestDetailJson;
 
     private int approve;
+
+    private Date createTime;
 
     private Date lastUpdateTime;
 
@@ -59,13 +59,14 @@ public class RequestListView {
         this.lastLoginTime = user.getLastLoginTime();
         this.relatedFlowSteps = user.getRelatedFlowSteps();
 
-        this.id = r.getId();
+        this.requestId = r.getId();
         this.userId = r.getUserId();
         this.flowId = r.getFlowId();
         this.stepOrder = r.getStepOrder();
         this.requestType = r.getRequestType();
         this.requestDetailJson = r.getRequestDetailJson();
         this.approve = r.getApprove();
+        this.createTime = r.getCreateTime();
         this.lastUpdateTime = r.getLastUpdateTime();
         this.requestDetail = r.getRequestDetail();
 
@@ -87,10 +88,6 @@ public class RequestListView {
         this.userName = userName;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -107,8 +104,8 @@ public class RequestListView {
         return relatedFlowSteps;
     }
 
-    public int getId() {
-        return id;
+    public int getRequestId() {
+        return requestId;
     }
 
     public String getUserId() {
@@ -141,5 +138,13 @@ public class RequestListView {
 
     public Map<String, Object> getRequestDetail() {
         return requestDetail;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

@@ -16,4 +16,6 @@ public interface UserMapper {
     List<User> selectByIds(@Param("ids")List<String> ids);
 
     List<User> selectByIdPwd(@Param("id")String id, @Param("pwd")String pwd);
+
+    int update(User u);
 }

@@ -21,4 +21,17 @@
         select <include refid="columns"/> from t_user
         where id = #{id} and password = #{pwd}
     </select>
+
+    <update id="update">
+        update t_user
+        <set>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
