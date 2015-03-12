@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hx.dao.RequestMapper">
+
+    <sql id="columns">
+        id,
+        user_id userId,
+        request_id flowId,
+        op_type opType,
+        create_time createTime,
+        remark
+    </sql>
+
+    <insert id="insertRequestOpLog" parameterType="com.hx.domain.RequestOpLog" keyProperty="id">
+
+        insert into t_request_op_log(`user_id`, `request_id`,`op_type`,`create_time`,`remark`
+        ) values (
+            #{userId}, #{requestId}, #{opType}, #{createTime}, #{remark}
+        )
+
+    </insert>
+
+    <select id="selectRequestOpLog">
+
+    </select>
+
+
+</mapper>

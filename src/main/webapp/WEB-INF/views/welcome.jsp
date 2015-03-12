@@ -55,7 +55,7 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul id='nav-sidebar' class="nav nav-sidebar">
-                <li id="li-approve" class="active"><a data="/a/index/approve">待我审批</a></li>
+                <li id="li-approve" class="active"><a data="/a/request/toapprove">待我审批</a></li>
                 <li id="li-create"><a data="/a/request/create/pg">新建申请</a></li>
                 <li id="li-mylist"><a data="/a/request/my/list/ing">我的申请</a></li>
             </ul>
@@ -72,13 +72,16 @@
 
 <script src="/js/jquery.min.js"></script>
 <script>
+
+
+
     $("document").ready(function () {
         $("#nav-sidebar").find("li").click(function () {
             $(this).parent().find("li").removeClass('active')
             $(this).addClass('active')
-            $('#div-main').load($(this).find('a').attr('data'));
-        })
+            $('#div-main').load($(this).find('a').attr('data'))
 
+        })
         $("#nav-sidebar").find("li.active").click()
     })
 </script>

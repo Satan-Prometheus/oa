@@ -36,11 +36,18 @@ public class RequestController extends CommonController {
     @Autowired
     private FlowManager flowManager;
 
+    @RequestMapping(value = "/toapprove", method = RequestMethod.GET)
+    public ModelAndView toApprove(HttpSession httpSession) {
+        List<RequestListView> requestListViews = requestService.queryToOperateRequests((User)httpSession.getAttribute("user"));
+        return new ModelAndView("approve", new ForwardModel("list", requestListViews));
+    }
+
     @ResponseBody
     @RequestMapping(value = "/approve/{request_id}/{step_order}/{approve}")
     public Object approve(@PathVariable("request_id") int requestId,
                           @PathVariable("step_order") int stepOrder,
-                          @PathVariable("approve") int approve) {
+                          @PathVariable("approve") int approve,
+                          HttpSession httpSession) {
 
 
         Request.Operate operate = Request.Operate.typeOf(approve);
@@ -49,7 +56,7 @@ public class RequestController extends CommonController {
         }
 
         try {
-            boolean b = requestService.operateRequest(requestId, stepOrder, operate);
+            boolean b = requestService.operateRequest(user(httpSession), requestId, stepOrder, operate);
             if (!b) {
                 return new JsonResultView().errCode(1).errMsg("operate fail");
             }
@@ -108,10 +115,12 @@ public class RequestController extends CommonController {
 
         } else {
             requestListViews = requestService.queryMyRequests(user, -1);
+            choose = "all";
         }
 
 
-        return new ModelAndView("myRequestList", new ForwardModel<String, Object>("list", requestListViews));
+        return new ModelAndView("myRequestList", new ForwardModel<String, Object>("list", requestListViews)
+                .append("listType", choose));
 
     }
 }

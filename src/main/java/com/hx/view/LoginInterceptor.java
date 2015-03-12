@@ -34,7 +34,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         Object user_id = session.getAttribute("user");
 
         if (user_id == null) {
-
             response.sendRedirect("/a/login/pg");
             return false;
         }

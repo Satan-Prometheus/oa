@@ -96,8 +96,8 @@
                     <td>${item.requestType}</td>
                     <td>${item.requestDetail}</td>
                     <td>
-                        <button data="/a/request/approve/${item.id}/${item.stepOrder}/2" name="agree">同意</button>
-                        <button data="/a/request/approve/${item.id}/${item.stepOrder}/1" name="reject">拒绝</button>
+                        <button data="/a/request/approve/${item.requestId}/${item.stepOrder}/2" name="agree">同意</button>
+                        <button data="/a/request/approve/${item.requestId}/${item.stepOrder}/1" name="reject">拒绝</button>
                         <span name="agreeed" style="display:none">已同意</span><span name="rejected" style="display:none">已拒绝</span>
                     </td>
                 </tr>

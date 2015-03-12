@@ -12,7 +12,7 @@ import java.util.List;
  * Created by xh on 2015/2/27.
  */
 public class RequestListView {
-/*user*/
+/*me*/
     private String userName;
 
     private String password;
@@ -24,7 +24,7 @@ public class RequestListView {
     private Date lastLoginTime;
 
     private List<FlowStep> relatedFlowSteps;
-/*user end*/
+/*me end*/
 
 /*request */
     private int requestId;
@@ -46,18 +46,20 @@ public class RequestListView {
     private Date lastUpdateTime;
 
     private Map<String, Object> requestDetail;
+
+    private String lastOperatorName;
 /*request */
 
     public RequestListView() {}
 
-    public RequestListView(Request r, User user) {
+    public RequestListView(Request r, User me, User lastOperator) {
 
-        this.userName = user.getName();
-        this.password = user.getPassword();
-        this.department = user.getDepartment();
-        this.level = user.getLevel();
-        this.lastLoginTime = user.getLastLoginTime();
-        this.relatedFlowSteps = user.getRelatedFlowSteps();
+        this.userName = me.getName();
+        this.password = me.getPassword();
+        this.department = me.getDepartment();
+        this.level = me.getLevel();
+        this.lastLoginTime = me.getLastLoginTime();
+        this.relatedFlowSteps = me.getRelatedFlowSteps();
 
         this.requestId = r.getId();
         this.userId = r.getUserId();
@@ -70,6 +72,9 @@ public class RequestListView {
         this.lastUpdateTime = r.getLastUpdateTime();
         this.requestDetail = r.getRequestDetail();
 
+        if (lastOperator != null) {
+            this.lastOperatorName = lastOperator.getName();
+        }
     }
 
     public String getDepartment() {
@@ -146,5 +151,13 @@ public class RequestListView {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getLastOperatorName() {
+        return lastOperatorName;
+    }
+
+    public void setLastOperatorName(String lastOperatorName) {
+        this.lastOperatorName = lastOperatorName;
     }
 }

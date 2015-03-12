@@ -50,6 +50,8 @@ public class Request {
 
     private Date lastUpdateTime;
 
+    private String lastOperatorId;
+
     private Map<String, Object> requestDetail;
 
     public Integer getId() {
@@ -122,6 +124,14 @@ public class Request {
 
     public void setLastUpdateTime(Date lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    public String getLastOperatorId() {
+        return lastOperatorId;
+    }
+
+    public void setLastOperatorId(String lastOperatorId) {
+        this.lastOperatorId = lastOperatorId;
     }
 
     public Map<String, Object> getRequestDetail() {

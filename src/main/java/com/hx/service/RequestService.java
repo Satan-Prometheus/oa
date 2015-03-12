@@ -52,14 +52,13 @@ public class RequestService {
             }
         }
 
-        List<String> userIds = new ArrayList<String>(requests.size());
-        for (Request r : requests) userIds.add(r.getUserId());
-
-        Map<String, User> userMap = User.idMapper(userMapper.selectByIds(userIds));
-
         List<RequestListView> viewList = new ArrayList<RequestListView>(requests.size());
-        for (Request r : requests) {
-            viewList.add(new RequestListView(r, userMap.get(r.getUserId())));
+
+        if (requests.size() > 0) {
+            Map<String, User> userMap = queryRequestRelatedUsers(requests);
+            for (Request r : requests) {
+                viewList.add(new RequestListView(r, userMap.get(r.getUserId()), userMap.get(r.getLastOperatorId())));
+            }
         }
 
         return viewList;
@@ -73,7 +72,7 @@ public class RequestService {
      * @param operate 同意否 1:拒绝 2：同意
      * @return
      */
-    public boolean operateRequest(int requestId, int stepOrder, Request.Operate operate) {
+    public boolean operateRequest(User user, int requestId, int stepOrder, Request.Operate operate) {
 
         Request r = requestMapper.selectByPrimaryKey(requestId);
         if (r == null) return false;
@@ -82,6 +81,7 @@ public class RequestService {
         if (flow == null) return false;
 
         Request request = new Request();
+        request.setLastOperatorId(user.getId());
 
         FlowStep nextStep = flow.findNextStep(stepOrder);
         // last step
@@ -137,6 +137,7 @@ public class RequestService {
             request.setApprove(0);
             request.setCreateTime(now);
             request.setLastUpdateTime(now);
+            request.setLastOperatorId(user.getId());
 
             Map<String, Object> detailMap = new HashMap<String, Object>();
             detailMap.put("day", requestInfo.getDay());
@@ -176,10 +177,19 @@ public class RequestService {
         List<Request> requests = requestMapper.selectByExample(re);
 
         List<RequestListView> viewList = new ArrayList<RequestListView>(requests.size());
-        for (Request r : requests) {
-            viewList.add(new RequestListView(r, user));
+        if (requests.size() > 0) {
+            Map<String, User> userMap = queryRequestRelatedUsers(requests);
+            for (Request r : requests) {
+                viewList.add(new RequestListView(r, user, userMap.get(r.getLastOperatorId())));
+            }
         }
-
         return viewList;
+    }
+
+    private Map<String, User> queryRequestRelatedUsers(List<Request> requests) {
+        List<String> userIds = new ArrayList<String>(requests.size());
+        for (Request r : requests) userIds.add(r.getUserId());
+
+        return User.idMapper(userMapper.selectByIds(userIds));
     }
 }

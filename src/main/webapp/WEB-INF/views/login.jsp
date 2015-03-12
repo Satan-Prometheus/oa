@@ -78,7 +78,14 @@
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script>
+    $("document").ready(function(){
+        if ($("#div-main").length != 0) {
+            window.location.replace("/a/login/pg")
+        }
 
+    })
+</script>
 </body>
 </html>
 
