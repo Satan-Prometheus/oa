@@ -125,6 +125,11 @@ public class RequestService {
             throw new IllegalStateException("can't match flow by submitted info");
         }
 
+        FlowStep step = flow.findFirstStep(user.getLevel());
+        if (step == null) {
+            throw new IllegalStateException("can't find flow step");
+        }
+
 
         try {
             Date now = new Date();
@@ -132,7 +137,7 @@ public class RequestService {
             Request request = new Request();
             request.setUserId(user.getId());
             request.setFlowId(flow.id);
-            request.setStepOrder(flow.findFirstStep(user.getLevel()).order);
+            request.setStepOrder(step.order);
             request.setRequestType(requestType);
 
             request.setApprove(0);
@@ -170,7 +175,7 @@ public class RequestService {
         }
 
         RequestExample re = new RequestExample();
-        re.setOrderByClause("last_update_time");
+        re.setOrderByClause("last_update_time desc");
         RequestExample.Criteria criteria = re.createCriteria().andUserIdEqualTo(user.getId());
 
         if (approve != -1) criteria.andApproveEqualTo(approve);

@@ -16,7 +16,7 @@
 
         <div class="container">
             <div class="row form-group">
-                <label for="requestType" class="col-sm-1 my-label">选择申请类型</label>
+                <label for="requestType" class="col-sm-1 my-label" style="min-width: 120px;">选择申请类型</label>
 
                 <div class="col-sm-6">
                     <select id="requestType" class="form-control" name="requestType"
@@ -78,7 +78,7 @@
 
         <div class="container">
             <div class="row form-group">
-                <label for="div-day-length" class="col-sm-1 my-label">请假时长</label>
+                <label for="div-day-length" class="col-sm-1 my-label" style="min-width: 90px;">请假时长</label>
 
                 <div class="col-sm-3">
                     <div id="div-day-length" class="input-group">
@@ -94,7 +94,7 @@
             </div>
 
             <div class="row form-group">
-                <label for="div-day-range" class="col-sm-1 my-label">请假时段</label>
+                <label for="div-day-range" class="col-sm-1 my-label" style="min-width: 90px;">请假时段</label>
 
                 <div class="col-sm-6">
                     <div id="div-day-range" class="input-group">
@@ -112,7 +112,7 @@
 
             <div class="row form-group">
 
-                <label for="div-begoff-desc" class="col-sm-1 my-label">请假说明</label>
+                <label for="div-begoff-desc" class="col-sm-1 my-label" style="min-width: 90px;">请假说明</label>
 
                 <div class="col-sm-6">
                     <div id="div-begoff-desc" class="input-group">

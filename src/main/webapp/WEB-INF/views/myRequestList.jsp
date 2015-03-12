@@ -9,13 +9,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div>
-    <h2 class="sub-header">我的申请</h2>
-    <select id="listType" class="form-control" name="listType"
-            onchange="listTypeChange(this.options[this.selectedIndex].value);">
-            <option value="all">全部请求</option>
-            <option value="done">已结束</option>
-            <option value="ing">处理中</option>
-    </select>
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+            <div class="row form-group">
+                <label for="listType" class="col-sm-1 my-label">处理状态</label>
+
+                <div class="col-sm-6">
+                    <select id="listType" class="form-control" name="listType"
+                            onchange="listTypeChange(this.options[this.selectedIndex].value);">
+                        <option value="all">全部请求</option>
+                        <option value="done">已结束</option>
+                        <option value="ing">处理中</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -38,11 +49,11 @@
                                         pattern="yyyy-MM-dd hh:mm:ss"/></td>
                     <td>${item.lastOperatorName}</td>
                     <td>
-                    <c:choose>
-                        <c:when test="${item.approve == 0}">未完成</c:when>
-                        <c:when test="${item.approve == 1}">已拒绝</c:when>
-                        <c:when test="${item.approve == 2}">已通过</c:when>
-                    </c:choose></td>
+                        <c:choose>
+                            <c:when test="${item.approve == 0}">未完成</c:when>
+                            <c:when test="${item.approve == 1}">已拒绝</c:when>
+                            <c:when test="${item.approve == 2}">已通过</c:when>
+                        </c:choose></td>
                 </tr>
             </c:forEach>
 
