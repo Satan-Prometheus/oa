@@ -82,6 +82,7 @@ public class RequestService {
 
         Request request = new Request();
         request.setLastOperatorId(user.getId());
+        request.setLastUpdateTime(new Date());
 
         FlowStep nextStep = flow.findNextStep(stepOrder);
         // last step
