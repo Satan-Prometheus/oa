@@ -131,7 +131,7 @@ public class RequestService {
             Request request = new Request();
             request.setUserId(user.getId());
             request.setFlowId(flow.id);
-            request.setStepOrder(flow.findNextStep(-1).order);
+            request.setStepOrder(flow.findFirstStep(user.getLevel()).order);
             request.setRequestType(requestType);
 
             request.setApprove(0);

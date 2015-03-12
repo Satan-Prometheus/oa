@@ -26,10 +26,16 @@ public class Flow {
 
     private Map<Integer, FlowStep> stepHolder;
 
+    public FlowStep findFirstStep(int level) {
+        FlowStep step = steps[0];
+
+        while (step != null && step.level <= level) step = step.getNxt();
+
+        return step;
+    }
+
     public FlowStep findNextStep(int curOrder) {
-        if (curOrder < 0) {
-            return steps[0];
-        }
+
 
         FlowStep cur = stepHolder.get(curOrder);
         if (cur == null) {
