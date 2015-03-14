@@ -15,7 +15,7 @@
             index_id = $(this).parent().attr("id")
             action = "agree"
             //$("#exampleModalLabel").innerHTML="同意"
-            document.getElementById("exampleModalLabel").innerHTML = "同意"
+            document.getElementById("exampleModalLabel").innerHTML = "同意 " + $(this).attr("department") + "的" + $(this).attr("userName") + "的" + $(this).attr("requestType") + "申请"
             document.getElementById("Modeldetail").innerHTML = $(this).attr("requestDetail")
             document.getElementById("message-text").value ="同意"
             $("#exampleModal").modal('show')
@@ -27,7 +27,7 @@
             index_id = $(this).parent().attr("id")
             action = "reject"
             //$("#exampleModalLabel").innerHTML="拒绝"
-            document.getElementById("exampleModalLabel").innerHTML = "拒绝"
+            document.getElementById("exampleModalLabel").innerHTML = "拒绝" + $(this).attr("department") + "的" + $(this).attr("userName") + "的" + $(this).attr("requestType") + "申请"
             document.getElementById("Modeldetail").innerHTML = $(this).attr("requestDetail")
             document.getElementById("message-text").value =""
 
@@ -85,10 +85,10 @@
                     <td>${item.userName}</td>
                     <td>${item.department}</td>
                     <td>${item.requestType}</td>
-                    <td>${item.requestDetail}</td>
+                    <td>${item.requestDetail_AskForLeave}</td>
                     <td id="${item.requestId}">
-                        <button requestDetail="${item.requestDetail}" class="btn btn-primary" data="/a/request/approve/${item.requestId}/${item.stepOrder}/2" name="agree">同意</button>
-                        <button requestDetail="${item.requestDetail}" class="btn btn-primary" data="/a/request/approve/${item.requestId}/${item.stepOrder}/1" name="reject">拒绝</button>
+                        <button userName="${item.userName}" department="${item.department}" requestType="${item.requestType}" requestDetail="${item.requestDetail_AskForLeave}" class="btn btn-primary" data="/a/request/approve/${item.requestId}/${item.stepOrder}/2" name="agree">同意</button>
+                        <button userName="${item.userName}" department="${item.department}" requestType="${item.requestType}" requestDetail="${item.requestDetail_AskForLeave}" class="btn btn-primary" data="/a/request/approve/${item.requestId}/${item.stepOrder}/1" name="reject">拒绝</button>
                         <span name="agreeed" style="display:none">已同意</span><span name="rejected" style="display:none">已拒绝</span>
                     </td>
                 </tr>
