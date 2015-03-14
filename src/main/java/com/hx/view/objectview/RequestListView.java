@@ -47,6 +47,10 @@ public class RequestListView {
 
     private Map<String, Object> requestDetail;
 
+
+
+    private String requestDetail_AskForLeave;
+
     private String lastOperatorName;
 /*request */
 
@@ -71,6 +75,9 @@ public class RequestListView {
         this.createTime = r.getCreateTime();
         this.lastUpdateTime = r.getLastUpdateTime();
         this.requestDetail = r.getRequestDetail();
+
+        this.requestDetail_AskForLeave = "从"+requestDetail.get("from")+"到"+requestDetail.get("to")+"请"+requestDetail.get("day")+"天"+requestDetail.get("hour")
+                                                +", 请假理由:"+requestDetail.get("desc");
 
         if (lastOperator != null) {
             this.lastOperatorName = lastOperator.getName();
@@ -159,5 +166,8 @@ public class RequestListView {
 
     public void setLastOperatorName(String lastOperatorName) {
         this.lastOperatorName = lastOperatorName;
+    }
+    public String getRequestDetail_AskForLeave() {
+        return requestDetail_AskForLeave;
     }
 }
