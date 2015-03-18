@@ -11,7 +11,7 @@ public class RequestOpLog {
 
     private String userId;
 
-    private String requestId;
+    private int requestId;
 
     private int opType;
 
@@ -35,11 +35,11 @@ public class RequestOpLog {
         this.userId = userId;
     }
 
-    public String getRequestId() {
+    public int getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public void setRequestId(int requestId) {
         this.requestId = requestId;
     }
 

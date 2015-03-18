@@ -43,10 +43,11 @@ public class RequestController extends CommonController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/approve/{request_id}/{step_order}/{approve}")
+    @RequestMapping(value = "/approve/{request_id}/{step_order}/{approve}", method = RequestMethod.POST)
     public Object approve(@PathVariable("request_id") int requestId,
                           @PathVariable("step_order") int stepOrder,
                           @PathVariable("approve") int approve,
+                          @RequestParam("remark") String remark,
                           HttpSession httpSession) {
 
 
@@ -56,7 +57,7 @@ public class RequestController extends CommonController {
         }
 
         try {
-            boolean b = requestService.operateRequest(user(httpSession), requestId, stepOrder, operate);
+            boolean b = requestService.operateRequest(user(httpSession), requestId, stepOrder, operate, remark);
             if (!b) {
                 return new JsonResultView().errCode(1).errMsg("operate fail");
             }

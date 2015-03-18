@@ -1,16 +1,16 @@
 package com.hx.service;
 
 import com.hx.common.*;
-import com.hx.dao.RequestExample;
-import com.hx.dao.RequestMapper;
-import com.hx.dao.UserMapper;
+import com.hx.dao.*;
 import com.hx.domain.Request;
+import com.hx.domain.RequestOpLog;
 import com.hx.domain.User;
 import com.hx.view.objectview.NewRequestInfo;
 import com.hx.view.objectview.RequestListView;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -20,6 +20,9 @@ import java.util.*;
 
 @Repository
 public class RequestService {
+
+    @Autowired
+    private RequestOpLogMapper requestOpLogMapper;
 
     @Autowired
     private RequestMapper requestMapper;
@@ -72,7 +75,8 @@ public class RequestService {
      * @param operate 同意否 1:拒绝 2：同意
      * @return
      */
-    public boolean operateRequest(User user, int requestId, int stepOrder, Request.Operate operate) {
+    @Transactional
+    public boolean operateRequest(User user, int requestId, int stepOrder, Request.Operate operate, String remark) {
 
         Request r = requestMapper.selectByPrimaryKey(requestId);
         if (r == null) return false;
@@ -80,9 +84,11 @@ public class RequestService {
         Flow flow = flowManager.getFlow(flowId);
         if (flow == null) return false;
 
+        Date now = new Date();
+
         Request request = new Request();
         request.setLastOperatorId(user.getId());
-        request.setLastUpdateTime(new Date());
+        request.setLastUpdateTime(now);
 
         FlowStep nextStep = flow.findNextStep(stepOrder);
         // last step
@@ -98,6 +104,14 @@ public class RequestService {
             }
         }
 
+        RequestOpLog opLog = new RequestOpLog();
+        opLog.setRequestId(requestId);
+        opLog.setCreateTime(now);
+        opLog.setRemark(remark);
+        opLog.setOpType(operate.code());
+        opLog.setUserId(user.getId());
+        requestOpLogMapper.insert(opLog);
+
         RequestExample re = new RequestExample();
         re.createCriteria()
                 .andIdEqualTo(requestId)
@@ -106,7 +120,7 @@ public class RequestService {
         return requestMapper.updateByExampleSelective(request, re) > 0;
     }
 
-
+    @Transactional
     public boolean createNewRequest(User user, NewRequestInfo requestInfo) {
         String requestType = requestInfo.getRequestType();
         if (requestType == null) {
@@ -153,7 +167,16 @@ public class RequestService {
             detailMap.put("to", DateFormatUtils.format(new Date(Long.valueOf(requestInfo.getTo())), "yyyy-MM-dd HH:mm:ss"));
             request.setRequestDetail(detailMap);
 
-            requestMapper.insert(request);
+            int requestId = requestMapper.insert(request);
+
+            RequestOpLog opLog = new RequestOpLog();
+            opLog.setRequestId(requestId);
+            opLog.setCreateTime(now);
+            opLog.setRemark("创建申请");
+            opLog.setOpType(0);
+            opLog.setUserId(user.getId());
+            requestOpLogMapper.insert(opLog);
+
             return true;
         } catch (Exception e) {
             throw new RuntimeException(e);
