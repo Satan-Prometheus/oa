@@ -86,7 +86,7 @@
                         <input id="begoff-day" type="text" class="form-control" placeholder="0" maxlength="2">
 
                         <div class="input-group-addon">天</div>
-                        <input id="begOff-hour" type="text" class="form-control" placeholder="0" maxlength="2">
+                        <input id="begoff-hour" type="text" class="form-control" placeholder="0" maxlength="2">
 
                         <div class="input-group-addon">小时</div>
                     </div>
